@@ -62,17 +62,15 @@ To get started, clone the project using the following command:
 
 ### Running Migrations
 Before running the application, you'll need to apply any database migrations. Navigate to the project directory and use the following command:
-`bash
-dotnet ef database update
+
+`dotnet ef database update`
 
 This will apply any pending migrations and set up the database with the necessary schema.
-`bash
-dotnet run
-
 
 ### Starting the Application
 Once the migrations have been applied, you can start the application using the following command:
 
+`dotnet run`
 
 ### AppSettings Configuration
 
