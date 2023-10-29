@@ -17,7 +17,6 @@ BlazorBlogX redefines the blogging experience with its cutting-edge integration 
 1. Open a terminal window.
 2. Use a package manager like [Homebrew](https://brew.sh/) to install .NET:
 
-
 ## Key Features
 
 - **Intuitive Blazor Interface**: Enjoy a smooth and intuitive user interface crafted with Blazor's component-based architecture, ensuring a seamless writing and editing experience.
@@ -54,3 +53,44 @@ BlazorBlogX redefines the blogging experience with its cutting-edge integration 
 - Serilog.AspNetCore (Version 7.0.0)
 - Swashbuckle.AspNetCore (Version 6.5.0)
 - Syncfusion.Blazor. (Version 23.1.42)
+
+### AppSettings Configuration
+
+This `appsettings.json` file serves as a configuration file for a .NET application. It contains various settings and parameters to customize the behavior of the application.
+
+#### Logging Configuration
+
+The `Logging` section specifies how the application handles logging:
+
+- **Default Log Level**: Log messages with a severity level of "Information" and higher will be recorded.
+
+- **Microsoft.AspNetCore Log Level**: Log messages from the `Microsoft.AspNetCore` namespace with a severity level of "Warning" and higher will be recorded.
+
+#### Application Settings
+
+Under the `AppSettings` section, the following configuration is defined:
+
+- **Site URL**: The base URL of the application is set to `https://localhost:7152`.
+
+#### Syncfusion License Key
+
+The `SyncfusionLicenseKey` field appears to contain an encrypted or encoded license key for the Syncfusion library, which is likely used within the application.
+
+#### Allowed Hosts
+
+Requests from any host are permitted due to the wildcard `*` in the `AllowedHosts` field. This means the application can be accessed from any domain.
+
+#### Database Connection String
+
+The `ConnectionStrings` section contains the connection string for the application's database:
+
+- **Database Type**: Microsoft SQL Server is used.
+
+- **Server**: The database is hosted locally on `localhost` with an instance named `SQLEXPRESS` and is reachable on port `1433`.
+
+- **Database Name**: The database is named `BlazorBlogX`.
+
+- **Authentication**: It uses SQL Server authentication with the username `sa` and password `123`.
+
+- **Trust Server Certificate**: The application trusts the server certificate for secure connections.
+
