@@ -53,6 +53,26 @@ BlazorBlogX redefines the blogging experience with its cutting-edge integration 
 - Serilog.AspNetCore (Version 7.0.0)
 - Swashbuckle.AspNetCore (Version 6.5.0)
 - Syncfusion.Blazor. (Version 23.1.42)
+## Getting Started
+
+### Cloning the Project
+To get started, clone the project using the following command:
+```bash
+git clone https://github.com/sitien173/Dotnet8BlazorWebApp.git
+
+### Running Migrations
+Before running the application, you'll need to apply any database migrations. Navigate to the project directory and use the following command:
+```bash
+dotnet ef database update
+
+This will apply any pending migrations and set up the database with the necessary schema.
+```bash
+dotnet run
+
+
+### Starting the Application
+Once the migrations have been applied, you can start the application using the following command:
+
 
 ### AppSettings Configuration
 
