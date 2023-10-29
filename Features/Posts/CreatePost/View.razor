@@ -1,0 +1,146 @@
+﻿@page "/create-post"
+@attribute [RenderModeInteractiveServer]
+
+<PageTitle>@ConstantStrings.ApplicationName - Create New Post</PageTitle>
+
+<header class="masthead" style="background-image:url('assets/img/contact-bg.jpg');">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-lg-8 mx-auto position-relative">
+                <div class="site-heading">
+                    <h1>Create New Post</h1><span class="subheading">Create New Post</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-lg-8 mx-auto">
+            <EditForm Model="@_request" Enhance="@true" OnValidSubmit="@OnValidSubmitAsync">
+                <FluentValidator TValidator="CreatePost.Command"></FluentValidator>
+                <SfMessage Visible="_result.Item1" ShowIcon="true" ShowCloseIcon="true" Severity="MessageSeverity.Success">
+                    <span>@_result.Item2</span>
+                </SfMessage>
+                <SfMessage Visible="@(!_result.Item1 && !string.IsNullOrEmpty(_result.Item2))" ShowIcon="@true" ShowCloseIcon="@true" Severity="MessageSeverity.Error">
+                    <span>@_result.Item2</span>
+                </SfMessage>
+                <div class="control-group">
+                    <div class="form-floating controls mb-3">
+                        <SfTextBox FloatLabelType="@FloatLabelType.Auto" @bind-Value="_request.Title" Placeholder="Title"></SfTextBox>
+                        <ValidationMessage For="@(() => _request.Title)"></ValidationMessage>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="form-floating controls mb-3">
+                        <SfNumericTextBox FloatLabelType="@FloatLabelType.Auto" @bind-Value="_request.AuthorID" Placeholder="AuthorID"></SfNumericTextBox>
+                        <ValidationMessage For="@(() => _request.AuthorID)"></ValidationMessage>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="form-floating controls mb-3">
+                        <SfNumericTextBox @bind-Value="@_request.CategoryID" Placeholder="CategoryID"></SfNumericTextBox>
+                        <ValidationMessage For="@(() => _request.CategoryID)"></ValidationMessage>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="form-floating controls mb-3">
+                        <SfRichTextEditor FloatLabelType="@FloatLabelType.Auto" @bind-Value="_request.Content" Placeholder="Content"></SfRichTextEditor>
+                        <ValidationMessage For="@(() => _request.Content)"></ValidationMessage>
+                    </div>
+                </div>
+                @if (_request.Details.Count > 0)
+                {
+                    <SfCard Orientation="CardOrientation.Horizontal">
+                        <CardStacked>
+                            <CardHeader Title="@Localizer[SharedResource.CreatePost_Detail_Title]"></CardHeader>
+                            <CardContent EnableSeparator="true">
+                                @for (int i = 0; i < _request.Details.Count; i++)
+                                {
+                                    <br />
+                                    <DetailPartial Detail="@_request.Details[i]" Index="i" DeleteAction="OnDeleteDetail"/>
+                                }
+                            </CardContent>
+                            <CardFooter>
+                                <CardFooterContent>
+                                    <div class="d-flex justify-content-start">
+                                        <SfButton @onclick="@AddDetail" type="button" CssClass="e-round">
+                                            <SfIcon Name="IconName.Plus" Size="IconSize.Medium"></SfIcon>
+                                        </SfButton>
+                                    </div>
+                                </CardFooterContent>
+                            </CardFooter>
+                        </CardStacked>
+                    </SfCard>
+                }
+                else
+                {
+                    <br/>
+                    <div class="d-flex justify-content-start">
+                        <SfButton @onclick="@AddDetail" type="button" CssClass="e-round">
+                            <SfIcon Name="IconName.Plus" Size="IconSize.Medium"></SfIcon>
+                        </SfButton>
+                    </div>
+                    <br/>
+                }
+                <div class="d-flex justify-content-end">
+                    <SfButton type="button">@Localizer[SharedResource.Cancel_Btn]</SfButton>
+                    <SfProgressButton IsPrimary="true">
+                        @Localizer[SharedResource.Save_Btn]
+                        <ProgressButtonSpinSettings Position="SpinPosition.Right"></ProgressButtonSpinSettings>
+                    </SfProgressButton>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+    private CreatePost.Command _request = new();
+    private (bool, string) _result = (false, string.Empty);
+    private string _successMessage = string.Empty;
+    
+    [Inject]
+    private IStringLocalizer<SharedResource> Localizer { get; set; } = null!;
+
+    [Inject]
+    private IHttpClientFactory ClientFactory { get; set; } = null!;
+
+    protected override void OnInitialized()
+    {
+        _successMessage = Localizer[SharedResource.CreatePost_Successfully];
+    }
+
+    async Task OnValidSubmitAsync()
+    {
+        var client = ClientFactory.CreateClient(ConstantStrings.ApplicationName);
+        try
+        {
+            var result = await client.PostAsJsonAsync(CreatePost.Endpoint, _request);
+            if (result.IsSuccessStatusCode)
+            {
+                _result = (true, _successMessage);
+                _request = new();
+                return;
+            }
+
+            _result = (false, await result.Content.ReadAsStringAsync());
+        }
+        catch (Exception e)
+        {
+            _result = (false, e.Message);
+        }
+    }
+
+    void OnDeleteDetail(int index)
+    {
+        _request.Details.RemoveAt(index);
+    }
+
+    void AddDetail()
+    {
+        _request.Details.Add(new CreatePost.Command.Detail());
+    }
+
+}

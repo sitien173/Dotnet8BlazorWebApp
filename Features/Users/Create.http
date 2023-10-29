@@ -1,0 +1,9 @@
+﻿### Send POST request with json body
+POST {{applicationUrl}}/api/users
+Content-Type: application/json
+
+{
+  "email": "sitienbmt",
+  "password": "12345678"
+  
+}

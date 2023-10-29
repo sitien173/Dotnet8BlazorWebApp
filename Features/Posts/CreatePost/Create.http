@@ -1,0 +1,10 @@
+﻿### Send POST request with json body
+POST {{applicationUrl}}/api/posts
+Content-Type: application/json
+
+{
+  "title": "My first post",
+  "content": "This is my first post",
+  "authorID": 1,
+  "categoryID": 1
+}

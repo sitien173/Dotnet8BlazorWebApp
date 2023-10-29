@@ -1,0 +1,54 @@
+﻿<SfCard Orientation="CardOrientation.Horizontal" ID="Trimmer">
+    <CardStacked>
+        <CardHeader Title="@("#" + (Index + 1))"/>
+        <CardContent>
+            <div class="control-group">
+                <div class="form-floating controls mb-3">
+                    <SfTextBox FloatLabelType="@FloatLabelType.Auto" @bind-Value="Detail.Key" Placeholder="Key"></SfTextBox>
+                    <ValidationMessage For="@(() => Detail.Key)"></ValidationMessage>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="form-floating controls mb-3">
+                    <SfTextBox FloatLabelType="@FloatLabelType.Auto" @bind-Value="Detail.Value" Placeholder="Value"></SfTextBox>
+                    <ValidationMessage For="@(() => Detail.Value)"></ValidationMessage>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="form-floating controls mb-3">
+                    <SfTextBox FloatLabelType="@FloatLabelType.Auto" @bind-Value="Detail.Type" Placeholder="Type"></SfTextBox>
+                    <ValidationMessage For="@(() => Detail.Type)"></ValidationMessage>
+                </div>
+            </div>
+        </CardContent>
+        <CardFooter>
+            <CardFooterContent>
+                <div class="d-flex justify-content-end">
+                    <SfButton @onclick="OnDelete" type="button" CssClass="e-round">
+                        <SfIcon Name="IconName.CircleRemove" Size="IconSize.Medium"></SfIcon>
+                    </SfButton>
+                </div>
+            </CardFooterContent>
+        </CardFooter>
+    </CardStacked>
+</SfCard>
+
+@code
+{
+    [Parameter]
+    public int Index { get; set; }
+
+    [Parameter]
+    public CreatePost.Command.Detail Detail { get; set; }
+
+    [Inject]
+    public IStringLocalizer<SharedResource> Localizer { get; set; }
+
+    [Parameter]
+    public EventCallback<int> DeleteAction { get; set; }
+
+    private async Task OnDelete()
+    {
+        await DeleteAction.InvokeAsync(Index);
+    }
+}

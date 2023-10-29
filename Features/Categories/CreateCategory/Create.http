@@ -1,0 +1,7 @@
+﻿### Send POST request with json body
+POST {{applicationUrl}}/api/categories
+Content-Type: application/json
+
+{
+  "name": "Category 1"
+}
