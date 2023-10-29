@@ -57,8 +57,8 @@ BlazorBlogX redefines the blogging experience with its cutting-edge integration 
 
 ### Cloning the Project
 To get started, clone the project using the following command:
-``bash
-git clone https://github.com/sitien173/Dotnet8BlazorWebApp.git
+
+`git clone https://github.com/sitien173/Dotnet8BlazorWebApp.git`
 
 ### Running Migrations
 Before running the application, you'll need to apply any database migrations. Navigate to the project directory and use the following command:
